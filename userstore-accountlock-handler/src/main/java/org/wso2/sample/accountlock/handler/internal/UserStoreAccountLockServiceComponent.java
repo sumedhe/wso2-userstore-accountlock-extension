@@ -3,20 +3,21 @@ package org.wso2.sample.accountlock.handler.internal;
 import org.apache.log4j.Logger;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.ComponentContext;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
 import org.wso2.carbon.identity.event.handler.AbstractEventHandler;
 import org.wso2.carbon.user.core.UserStoreException;
+import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.sample.accountlock.handler.UserStoreAccountLockHandler;
 
-@Component(name = "org.wso2.sample.accountlock.handler.internal.component",
-        immediate = true)
+/**
+ * @scr.component name="org.wso2.sample.accountlock.handler.internal.component" immediate=true
+ * @scr.reference name="realm.service"
+ * interface="org.wso2.carbon.user.core.service.RealmService"cardinality="1..1"
+ * policy="dynamic" bind="setRealmService" unbind="unsetRealmService"
+ */
 public class UserStoreAccountLockServiceComponent {
 
     private static final Logger log = Logger.getLogger(UserStoreAccountLockServiceComponent.class);
 
-    @Activate
     protected void activate(ComponentContext context) throws UserStoreException {
 
         try {
@@ -28,12 +29,11 @@ public class UserStoreAccountLockServiceComponent {
             if (log.isDebugEnabled()) {
                 log.debug("CustomAccountLockHandler is registered");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Throwable e) {
+            log.error("Error occurred while activating the bundle: CustomAccountLockHandler" + e);
         }
     }
 
-    @Deactivate
     protected void deactivate(ComponentContext context) {
 
         if (log.isDebugEnabled()) {
@@ -41,5 +41,19 @@ public class UserStoreAccountLockServiceComponent {
         }
     }
 
+    protected void setRealmService(RealmService realmService) {
 
+        if (log.isDebugEnabled()) {
+            log.debug("Setting the Realm Service");
+        }
+        UserStoreAccountLockServiceDataHolder.getInstance().setRealmService(realmService);
+    }
+
+    protected void unsetRealmService(RealmService realmService) {
+
+        if (log.isDebugEnabled()) {
+            log.debug("UnSetting the Realm Service");
+        }
+        UserStoreAccountLockServiceDataHolder.getInstance().setRealmService(null);
+    }
 }

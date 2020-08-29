@@ -20,7 +20,7 @@ public class UserStoreAccountLockFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
 
-        IdentityUtil.threadLocalProperties.get().remove(UPDATED_ALL_USERSTORES_KEY);
+        IdentityUtil.threadLocalProperties.get().remove(UPDATED_ALL_USERSTORES_KEY); //TODO: null check
 
         filterChain.doFilter(servletRequest, servletResponse);
     }
