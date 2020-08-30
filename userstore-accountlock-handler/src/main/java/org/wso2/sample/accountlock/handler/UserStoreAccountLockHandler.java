@@ -16,16 +16,17 @@ import org.wso2.carbon.identity.governance.common.IdentityConnectorConfig;
 import org.wso2.carbon.identity.handler.event.account.lock.AccountLockHandler;
 import org.wso2.carbon.identity.handler.event.account.lock.constants.AccountConstants;
 import org.wso2.carbon.identity.handler.event.account.lock.exception.AccountLockException;
-import org.wso2.carbon.identity.handler.event.account.lock.internal.AccountServiceDataHolder;
 import org.wso2.carbon.user.core.UserCoreConstants;
 import org.wso2.carbon.user.core.UserStoreException;
 import org.wso2.carbon.user.core.UserStoreManager;
+import org.wso2.sample.accountlock.handler.internal.UserStoreAccountLockServiceDataHolder;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class UserStoreAccountLockHandler extends AccountLockHandler implements IdentityConnectorConfig {
 
+    @SuppressWarnings("PackageAccessibility")
     private static final Log log = LogFactory.getLog(AccountLockHandler.class);
 
     private static final String UPDATED_ALL_USERSTORES_KEY = "UPDATED_ALL_USERSTORES";
@@ -224,7 +225,7 @@ public class UserStoreAccountLockHandler extends AccountLockHandler implements I
 
         if (!(IdentityUtil.threadLocalProperties.get().containsKey(UPDATED_ALL_USERSTORES_KEY)
                 && Boolean.valueOf(IdentityUtil.threadLocalProperties.get().get(UPDATED_ALL_USERSTORES_KEY).toString()))) {
-            UserStoreManager userStoreManager = AccountServiceDataHolder.getInstance().getRealmService().
+            UserStoreManager userStoreManager = UserStoreAccountLockServiceDataHolder.getInstance().getRealmService().
                     getBootstrapRealm().getUserStoreManager();
             while (userStoreManager != null) {
                 if (isUserExistsInDomain(userStoreManager, userName)) {

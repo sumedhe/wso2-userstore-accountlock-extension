@@ -9,7 +9,7 @@
 2. Copy `target/org.wso2.sample.accountlock.handler-1.0.jar` to the `<IS_HOME>/repository/components/dropins` folder.
 
 3. Open `<IS_HOME>/repository/conf/identity/identity-event.properties` file and update the configurations of
-`account.lock.handler` as follows
+`account.lock.handler` to `userstore.account.lock.handler` as follows
     ```
    module.name.1=userstore.account.lock.handler
    userstore.account.lock.handler.subscription.1=PRE_AUTHENTICATION
@@ -22,9 +22,9 @@
 
 1. Run `mvn clean install` and build the project
 
-2. Copy `target/org.wso2.sample.accountlock.filter-1.0.jar` to the `<IS_HOME>/repository/components/dropins` folder.
+2. Copy `target/org.wso2.sample.accountlock.filter-1.0.jar` to the `<IS_HOME>/repository/components/lib` folder.
 
-3. Open `web.xml` (`web.xml.j2`) and enable the UserStoreAccountLockFilter by adding following lines
+3. Open `<IS_HOME>/repository/conf/tomcat/web.xml` and enable the UserStoreAccountLockFilter by adding following lines
 
     ```
     <filter>
@@ -39,3 +39,6 @@
         <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
     ```
+
+## Notes
+* Tested with WSO2 Identity Server 5.7.0
